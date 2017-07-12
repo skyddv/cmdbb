@@ -1,0 +1,12 @@
+<h1>{{ question.name }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'cmdb:vote' question.id %}" method="post">
+{% csrf_token %}
+{% for choice in question.cc_set.all %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+    <label for="choice{{ forloop.counter }}">{{ choice.deleted }}</label><br />
+{% endfor %}
+<input type="submit" value="Vote" />
+</form>

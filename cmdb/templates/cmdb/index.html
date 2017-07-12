@@ -1,0 +1,14 @@
+{#<img src="/static/django.png">#}
+{% load static %}
+
+<img src="{% static 'sprite.png' %}">
+
+    {% if latest_question_list %}
+    <ul>
+      {% for question in latest_question_list %}
+{#      <li><a href="/cmdb/{{ question.name}}/detail">{{ question.display }} </a></li>#}
+{#          <li><a href="/cmdb/{{ question.name}}/detail">{{ question.display }} </a></li>#}
+        <li><a href="{% url 'cmdb:skyddv' question.name %}">{{ question.display }} </a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
