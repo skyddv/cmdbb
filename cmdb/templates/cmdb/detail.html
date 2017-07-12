@@ -2,9 +2,9 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'cmdb:vote' question.id %}" method="post">
+<form action="{% url 'cmdb:vote' question.name %}" method="post">
 {% csrf_token %}
-{% for choice in question.cc_set.all %}
+{% for choice in question.cc.all %}
     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
     <label for="choice{{ forloop.counter }}">{{ choice.deleted }}</label><br />
 {% endfor %}

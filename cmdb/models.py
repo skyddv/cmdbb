@@ -13,8 +13,9 @@ class Schema(models.Model):
 
 
 class cc(models.Model):
-    question = models.ForeignKey(Schema, on_delete=models.CASCADE)
+    question = models.ForeignKey(Schema, related_name='cc', on_delete=models.CASCADE)
     deleted = models.CharField(max_length=45)
+    votes = models.IntegerField(default=0)
 
     def __str__(self):
             return self.deleted

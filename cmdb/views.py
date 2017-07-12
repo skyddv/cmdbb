@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Schema, cc
 from django.template import Template, Context, loader
-from django.utils import log
+from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
@@ -25,13 +25,18 @@ def rr(request):
     return HttpResponse(template.render(context))
 
 
-def vote(request, question_id):
-    question = get_object_or_404(Schema, pk=question_id)
+def results(request, name):
+    response = "fuck you nnn {}".format(name)
+    return HttpResponse(response)
+
+
+@csrf_exempt
+def vote(request, name):
+    question = get_object_or_404(Schema, name=name)
     if request.method == 'POST':
         choice_id = request.POST.get('choice', 0)
         try:
-            selected_choice = question.cc_set.get(pk=choice_id)
-            log(selected_choice)
+            selected_choice = question.cc.get(pk=choice_id)
         except cc.DoesNotExist:
             return render(request, 'cmdb/detail.html', {
                 'question': question,
@@ -40,5 +45,7 @@ def vote(request, question_id):
         else:
             selected_choice.votes += 1
             selected_choice.save()
-            return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
+            return HttpResponseRedirect(reverse('cmdb:results', args=(question.display,)))
+    else:
+        return HttpResponse('ni mei mei:%s' % name)
 
